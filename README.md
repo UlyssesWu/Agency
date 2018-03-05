@@ -3,7 +3,7 @@
 **Agency** is a .NET lib for Remote Dynamic, based on [dynamitey](https://github.com/ekonbenefits/dynamitey).
 
 ### Remote Dynamic? WTF?
-Remote Dynamic means to share a object between processes (usually using .NET Remoting) without the type to be known (using `dynamic` instead). It will be useful when the type is complex or changes frequently.
+Remote Dynamic means to share objects between processes (usually using .NET Remoting) without the type to be known (using `dynamic` instead). It will be useful when the type is complex or changes frequently.
 
 ### Demo
 Server:
@@ -47,13 +47,13 @@ static void Main(string[] args)
         Console.WriteLine(e);
         return;
     }
+	Console.WriteLine($"Current Weapon: {agent.Weapon}"); //get
     var weapon = "Silverballer";
     agent.Weapon = weapon; //set
     for (int i = 0; i < 5; i++)
     {
         agent.PointShooting(i); //Called on server
     }
-    Console.WriteLine(agent.Name + ": " + agent.IsDianaDead()); //get
     Console.ReadLine();
 }
 ```

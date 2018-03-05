@@ -21,8 +21,9 @@ namespace Agency.Test.Client
             var weapon = "Silverballer";
             Console.WriteLine($"Changing Weapon from {agent.Weapon} to {weapon}");
             agent.Weapon = weapon;
-            //This will not work since lambda's code is only in Client assembly. Looking for a solution
-            //agent.OnContractSigned += new Func<int, string>(i => $"Account += ${i}"); 
+            //This will pass the expression as a Func to be executed in server side event, but it's very limited.
+            Expression<Func<int, string>> exp = i => $"Account += ${i}";
+            agent.OnContractSigned += exp.GetDelegateDesc();
             for (int i = 0; i < 5; i++)
             {
                 agent.PointShooting(i);

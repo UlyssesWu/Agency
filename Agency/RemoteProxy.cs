@@ -16,6 +16,7 @@
 
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using Dynamitey;
 using Dynamitey.DynamicObjects;
 using Dynamitey.Internal.Optimization;
@@ -82,6 +83,11 @@ namespace Agency
         {
             if (base.TrySetMember(binder, value))
             {
+                var s = value.ToString();
+                if (s.StartsWith(Agency.AgencyLambdaToken))
+                {
+                    value = new ExpressionContract(s.Substring(Agency.AgencyLambdaToken.Length));
+                }
                 Agent.Execute(new RemoteInvocation(InvocationKind.Set, binder.Name, value));
                 return true;
             }

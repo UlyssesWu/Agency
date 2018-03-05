@@ -14,6 +14,7 @@ namespace Agency
 {
     public static class Agency
     {
+        internal const string AgencyLambdaToken = "@{lambda}";
         internal static Dictionary<string, object> Agents { get; } = new Dictionary<string, object>();
         public static void RegisterAgent(string address, object obj, IHandler handler)
         {

@@ -34,6 +34,9 @@
     <Reference Include="Dynamitey, Version=2.0.8.0, Culture=neutral, PublicKeyToken=cbf53ea3aeb972c6, processorArchitecture=MSIL">
       <HintPath>..\packages\Dynamitey.2.0.8-beta122\lib\net40\Dynamitey.dll</HintPath>
     </Reference>
+    <Reference Include="Serialize.Linq, Version=1.6.0.0, Culture=neutral, PublicKeyToken=25bcc11ba213b377, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serialize.Linq.1.6.0\lib\net45\Serialize.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Remoting" />
@@ -42,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Agency.cs" />
     <Compile Include="Agent.cs" />
+    <Compile Include="ExpressionContract.cs" />
     <Compile Include="RemoteInvocation.cs" />
     <Compile Include="RemoteRecoder.cs" />
     <Compile Include="Handler.cs" />

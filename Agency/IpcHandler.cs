@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
@@ -13,7 +14,6 @@ namespace Agency
         //private static List<IpcClientChannel> _clientChannels = new List<IpcClientChannel>();
         private static IpcClientChannel _clientChannel;
 
-        public IContract<byte[], object> Contract { get; } = new BinaryContract();
         public void Host(string address, object obj)
         {
             Agent agent = new Agent(address, obj);
@@ -38,12 +38,15 @@ namespace Agency
             IpcServerChannel channel = ChannelServices.GetChannel(domain) as IpcServerChannel;
             if (channel == null)
             {
+                BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
+                serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
                 //Instantiate our server channel.
-                channel = new IpcServerChannel(domain);
+                channel = new IpcServerChannel(domain, domain, serverProvider);
                 //Register the server channel.
                 ChannelServices.RegisterChannel(channel, false);
             }
 
+            var c = channel.GetChannelUri();
             //Register this service type.
             if (obj == null)
             {
@@ -60,12 +63,12 @@ namespace Agency
         /// Get interface object from host.
         /// </summary>
         /// <param name="channel"></param>
-        /// <param name="port"></param>
+        /// <param name="portName"></param>
         /// <returns></returns>
-        private static T IpcConnectClient<T>(string channel, string port)
+        private static T IpcConnectClient<T>(string channel, string portName)
         {
             T client =
-                (T)Activator.GetObject(typeof(T), $"ipc://{channel}/{port}");
+                (T)Activator.GetObject(typeof(T), $"ipc://{channel}/{portName}");
 
             if (client == null)
                 throw new ArgumentException("Unable to create remote interface.");

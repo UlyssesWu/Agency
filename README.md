@@ -47,7 +47,7 @@ static void Main(string[] args)
         Console.WriteLine(e);
         return;
     }
-	Console.WriteLine($"Current Weapon: {agent.Weapon}"); //get
+    Console.WriteLine($"Current Weapon: {agent.Weapon}"); //get
     var weapon = "Silverballer";
     agent.Weapon = weapon; //set
     for (int i = 0; i < 5; i++)

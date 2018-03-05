@@ -8,6 +8,7 @@ namespace Agency.Test.Server
 {
     class Agent47
     {
+        public event Func<int, string> OnContractSigned;
         public string Name { get; set; } = "Agent 47";
 
         public string Weapon { get; set; } = "Fiber Wire";
@@ -20,6 +21,10 @@ namespace Agency.Test.Server
         public void PointShooting(int enemy)
         {
             Console.WriteLine($"Target eliminated: {enemy}");
+            if (OnContractSigned != null)
+            {
+                Console.WriteLine(OnContractSigned.Invoke(enemy * 1000));
+            }
         }
     }
 }

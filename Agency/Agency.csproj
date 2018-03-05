@@ -42,8 +42,6 @@
   <ItemGroup>
     <Compile Include="Agency.cs" />
     <Compile Include="Agent.cs" />
-    <Compile Include="BinaryContract.cs" />
-    <Compile Include="Contract.cs" />
     <Compile Include="RemoteInvocation.cs" />
     <Compile Include="RemoteRecoder.cs" />
     <Compile Include="Handler.cs" />

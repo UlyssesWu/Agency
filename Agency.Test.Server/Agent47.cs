@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace Agency.Test.Server
 {
+    /// <summary>
+    /// Agent 47
+    /// </summary>
     class Agent47
     {
-        public event Func<int, float, string> OnContractSigned;
+        public event Func<int, float, string> OnContractFulfilled;
+        public event Action<int> OnContractSigned;
         public string Name { get; set; } = "Agent 47";
 
         public string Weapon { get; set; } = "Fiber Wire";
@@ -20,15 +24,14 @@ namespace Agency.Test.Server
 
         public string PointShooting(int enemy)
         {
-            var str = "Point Shooting";
+            OnContractSigned?.Invoke(1000);
             Console.WriteLine($"Target eliminated: {enemy}");
-            if (OnContractSigned != null)
+            if (OnContractFulfilled != null)
             {
-                str = OnContractSigned.Invoke(enemy, 1000);
-                Console.WriteLine(str);
+                Console.WriteLine(OnContractFulfilled.Invoke(enemy, 1000));
             }
 
-            return str;
+            return "Point Shooting...";
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Agency;
+using Dynamitey;
+using Dynamitey.DynamicObjects;
 using Newtonsoft.Json;
 
 namespace DynamiteyDemo
@@ -10,6 +13,7 @@ namespace DynamiteyDemo
     {
         static void Main(string[] args)
         {
+            TestEvent();
         }
 
         static void TestJson()
@@ -28,6 +32,23 @@ namespace DynamiteyDemo
             rSwampMan.ReplayOn(s);
             var w = s.Weapon;
             var n = s.Name;
+        }
+
+        static void TestEvent()
+        {
+            Func<int, float, string> func = (i, f) =>
+            {
+                Console.WriteLine("Good job.");
+                return $"Account: ${i * f}";
+            };
+
+            Func<int, float, string> func2 = (i, f) =>
+            {
+                Console.WriteLine("Good job.");
+                return $"Account: ${i * f}";
+            };
+            bool b = func == func2;
+
         }
 
         static void TestBinary()

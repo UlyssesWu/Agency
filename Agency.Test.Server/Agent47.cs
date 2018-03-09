@@ -8,7 +8,7 @@ namespace Agency.Test.Server
 {
     class Agent47
     {
-        public event Func<int, string> OnContractSigned;
+        public event Func<int, float, string> OnContractSigned;
         public string Name { get; set; } = "Agent 47";
 
         public string Weapon { get; set; } = "Fiber Wire";
@@ -18,13 +18,17 @@ namespace Agency.Test.Server
             return "You'll never know.";
         }
 
-        public void PointShooting(int enemy)
+        public string PointShooting(int enemy)
         {
+            var str = "Point Shooting";
             Console.WriteLine($"Target eliminated: {enemy}");
             if (OnContractSigned != null)
             {
-                Console.WriteLine(OnContractSigned.Invoke(enemy * 1000));
+                str = OnContractSigned.Invoke(enemy, 1000);
+                Console.WriteLine(str);
             }
+
+            return str;
         }
     }
 }

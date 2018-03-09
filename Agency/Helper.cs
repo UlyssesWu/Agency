@@ -10,11 +10,13 @@ namespace Agency
 {
     public static class Helper
     {
-        private static ExpressionSerializer _serializer = new ExpressionSerializer(new JsonSerializer());
+        private static readonly ExpressionSerializer Serializer = new ExpressionSerializer(new JsonSerializer());
 
         public static dynamic GetAgent(this Agent agent)
         {
-            return new RemoteProxy() { Agent = agent };
+            var proxy = new RemoteProxy() { Agent = agent, RemoteEvents = new List<string>(agent.GetTargetEvents()) };
+            agent.Dispatcher.Contract += (name, objs) => proxy.FireEvent(name, objs);
+            return proxy;
         }
 
         //public static ExpressionContract GetDelegateBytes(this Expression expression)
@@ -28,13 +30,13 @@ namespace Agency
         //    return _serializer.DeserializeBinary(bytes);
         //}
 
-        public static ExpressionContract GetDelegateDesc(this Expression expression)
+        public static ExpressionContract GetContract(this Expression expression, string @event = null)
         {
-            return new ExpressionContract(_serializer.SerializeText(expression));
+            return new ExpressionContract(Serializer.SerializeText(expression), @event);
         }
         internal static Expression GetExpression(this string desc)
         {
-            return _serializer.DeserializeText(desc);
+            return Serializer.DeserializeText(desc);
         }
     }
 }

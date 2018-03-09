@@ -1,17 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6144E794-D2C7-4679-B474-A7327E53FD59}</ProjectGuid>
+    <ProjectGuid>{723E33A7-903C-480C-8220-CF0980A0C36D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Agency</RootNamespace>
-    <AssemblyName>Agency</AssemblyName>
+    <RootNamespace>LinFu.Delegates</RootNamespace>
+    <AssemblyName>LinFu.Delegates</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,39 +30,44 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dynamitey, Version=2.0.8.0, Culture=neutral, PublicKeyToken=cbf53ea3aeb972c6, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dynamitey.2.0.8-beta122\lib\net40\Dynamitey.dll</HintPath>
-    </Reference>
-    <Reference Include="Serialize.Linq, Version=1.6.0.0, Culture=neutral, PublicKeyToken=25bcc11ba213b377, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serialize.Linq.1.6.0\lib\net45\Serialize.Linq.dll</HintPath>
+    <Reference Include="LinFu.DynamicProxy, Version=1.0.4.16035, Culture=neutral, PublicKeyToken=62a6874124340d6e, processorArchitecture=MSIL">
+      <HintPath>..\..\Agency\packages\LinFu.DynamicProxy.OfficialRelease.1.0.5\lib\net\LinFu.DynamicProxy.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Agency.cs" />
-    <Compile Include="Agent.cs" />
-    <Compile Include="ContractDispatcher.cs" />
-    <Compile Include="Contracts\EventContract.cs" />
-    <Compile Include="Contracts\ExpressionContract.cs" />
-    <Compile Include="RemoteInvocation.cs" />
-    <Compile Include="RemoteRecoder.cs" />
-    <Compile Include="Handler.cs" />
-    <Compile Include="Helper.cs" />
-    <Compile Include="IpcHandler.cs" />
+    <Compile Include="Args.cs" />
+    <Compile Include="EventBinder.cs" />
+    <Compile Include="Invokers\DefaultInvoker.cs" />
+    <Compile Include="DelegateExtensions.cs" />
+    <Compile Include="DelegateFactory.cs" />
+    <Compile Include="DelegateInfo.cs" />
+    <Compile Include="IDeferredArgument.cs" />
+    <Compile Include="Invokers\DelegateInvoker.cs" />
+    <Compile Include="Invokers\IInvoker.cs" />
+    <Compile Include="InterfaceBuilder.cs" />
+    <Compile Include="InterfaceInfo.cs" />
+    <Compile Include="InterfaceMethodInfo.cs" />
+    <Compile Include="OpenArgs.cs" />
+    <Compile Include="Partial\PartialApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoteProxy.cs" />
+    <Compile Include="Redirector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LinFu.Delegates\LinFu.Delegates\LinFu.Delegates.csproj">
-      <Project>{723e33a7-903c-480c-8220-cf0980a0c36d}</Project>
-      <Name>LinFu.Delegates</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

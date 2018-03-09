@@ -15,8 +15,12 @@
 
 
 using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.Remoting;
+using System.Runtime.Serialization;
 using Dynamitey;
 using Dynamitey.DynamicObjects;
 using Dynamitey.Internal.Optimization;
@@ -28,31 +32,56 @@ namespace Agency
     /// </summary>
     public class RemoteProxy : BaseForwarder
     {
+        public List<string> RemoteEvents { get; internal set; } = new List<string>();
+        //public Dictionary<string, List<Delegate>> RemoteDelegates { get; } = new Dictionary<string, List<Delegate>>();
+        public Dictionary<string, Delegate> RemoteDelegates { get; } = new Dictionary<string, Delegate>();
+
         public Agent Agent { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RemoteRecorder"/> class.
+        /// Initializes a new instance of the <see cref="RemoteProxy"/> class.
         /// </summary>
         public RemoteProxy() : base(new Dummy())
         {
         }
 
+        public object FireEvent(string name, object[] objects)
+        {
+            return RemoteDelegates.ContainsKey(name) ? RemoteDelegates[name].FastDynamicInvoke(objects) : null;
+            //if (!RemoteDelegates.ContainsKey(name)) return null;
+            //object result = null;
+            //foreach (var d in RemoteDelegates[name])
+            //{
+            //    result = d.FastDynamicInvoke(objects);
+
+            //}
+            //return result;
+        }
+
+        //private void AddCacheDelegate(string name, Delegate d)
+        //{
+        //    if (!RemoteDelegates.ContainsKey(name))
+        //    {
+        //        RemoteDelegates[name] = new List<Delegate>();
+        //    }
+        //    RemoteDelegates[name].Add(d);
+        //}
+
+        //private void RemoveCacheDelegate(string name, Delegate d)
+        //{
+        //    if (!RemoteDelegates.ContainsKey(name))
+        //    {
+        //        return;
+        //    }
+        //    RemoteDelegates[name].Remove(d);
+        //}
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="RemoteRecorder"/> class.
+        /// Initializes a new instance of the <see cref="RemoteProxy"/> class.
         /// </summary>
         /// <param name="target">The target.</param>
         public RemoteProxy(object target) : base(target)
         {
-        }
-
-        /// <summary>
-        /// Replays the recording on target.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="ins"></param>
-        public object ReplayOn<T>(T target, RemoteInvocation ins)
-        {
-            return ins.InvokeWithStoredArgs(target);
         }
 
         /// <summary>
@@ -63,11 +92,22 @@ namespace Agency
         /// <returns>
         /// true if the operation is successful; otherwise, false. If this method returns false, the run-time binder of the language determines the behavior. (In most cases, a run-time exception is thrown.)
         /// </returns>
-        public override bool TryGetMember(System.Dynamic.GetMemberBinder binder, out object result)
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
+            if (RemoteEvents.Contains(binder.Name))
+            {
+                result = new AddRemoveMarker();
+                return true;
+            }
             if (base.TryGetMember(binder, out result))
             {
-                result = Agent.Execute(new RemoteInvocation(InvocationKind.Get, binder.Name));
+                try
+                {
+                    result = Agent.Execute(new RemoteInvocation(InvocationKind.Get, binder.Name));
+                }
+                catch (SerializationException)
+                {
+                }
                 return true;
             }
             return false;
@@ -79,14 +119,53 @@ namespace Agency
         /// <param name="binder">The binder.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public override bool TrySetMember(System.Dynamic.SetMemberBinder binder, object value)
+        public override bool TrySetMember(SetMemberBinder binder, object value)
         {
             if (base.TrySetMember(binder, value))
             {
-                var s = value.ToString();
-                if (s.StartsWith(Agency.AgencyLambdaToken))
+                if (value is AddRemoveMarker m)
                 {
-                    value = new ExpressionContract(s.Substring(Agency.AgencyLambdaToken.Length));
+                    if (m.IsAdding)
+                    {
+                        if (m.Delegate is Delegate md)
+                        {
+                            value = md;
+                        }
+                        else if (m.Delegate is Expression exp)
+                        {
+                            value = exp.GetContract(binder.Name);
+                        }
+                        else
+                        {
+                            value = null;
+                            return false;
+                        }
+                    }
+                    else // -=
+                    {
+                        if (m.Delegate is Delegate md)
+                        {
+                            var contract = new EventContract(binder.Name, md.Method.Name, false);
+                            RemoteDelegates.Remove(contract.Description);
+                            value = contract;
+                        }
+                        else if (m.Delegate is Expression exp)
+                        {
+                            var contract = exp.GetContract(binder.Name);
+                            contract.IsAdd = false;
+                            value = contract;
+                        }
+                        else
+                        {
+                            value = null;
+                        }
+                    }
+                }
+                if (value is Delegate d)
+                {
+                    var contract = new EventContract(binder.Name, d.Method.Name, true);
+                    RemoteDelegates[contract.Description] = d;
+                    value = contract;
                 }
                 Agent.Execute(new RemoteInvocation(InvocationKind.Set, binder.Name, value));
                 return true;

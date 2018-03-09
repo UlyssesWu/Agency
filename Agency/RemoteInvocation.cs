@@ -231,18 +231,6 @@ namespace Agency
                     // ignored
                 }
             }
-            else
-            {
-                for (var i = 0; i < Args.Length; i++)
-                {
-                    var arg = Args[i];
-                    if (arg is ExpressionContract contract)
-                    {
-                        dynamic exp = contract.Expression;
-                        Args[i] = exp.Compile();
-                    }
-                }
-            }
             return Invoke(target, Args);
         }
     }

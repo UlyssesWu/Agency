@@ -12,7 +12,7 @@ namespace Agency
         private const string AgencyDomain = "ICA-PF";
         private static Dictionary<string, IpcServerChannel> _serverChannels = new Dictionary<string, IpcServerChannel>();
         //private static List<IpcClientChannel> _clientChannels = new List<IpcClientChannel>();
-        private static IpcClientChannel _clientChannel;
+        private static IpcServerChannel _clientChannel;
 
         public void Host(string address, object obj)
         {
@@ -24,11 +24,6 @@ namespace Agency
 
         public Agent Connect(string address)
         {
-            if (_clientChannel == null)
-            {
-                _clientChannel = new IpcClientChannel();
-                ChannelServices.RegisterChannel(_clientChannel, false);
-            }
             var agent = IpcConnectClient<Agent>(AgencyDomain, address);
             return agent;
         }
@@ -62,13 +57,25 @@ namespace Agency
         /// <summary>
         /// Get interface object from host.
         /// </summary>
-        /// <param name="channel"></param>
+        /// <param name="domain"></param>
         /// <param name="portName"></param>
         /// <returns></returns>
-        private static T IpcConnectClient<T>(string channel, string portName)
+        private static T IpcConnectClient<T>(string domain, string portName)
         {
+            if (_clientChannel == null)
+            {
+                BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
+                serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
+                var channelName = $"{domain}C";
+                //Instantiate our server channel.
+                var channel = new IpcServerChannel(channelName, channelName, serverProvider);
+                //Register the server channel.
+                ChannelServices.RegisterChannel(channel, false);
+                _clientChannel = channel;
+            }
+
             T client =
-                (T)Activator.GetObject(typeof(T), $"ipc://{channel}/{portName}");
+                (T)Activator.GetObject(typeof(T), $"ipc://{domain}/{portName}");
 
             if (client == null)
                 throw new ArgumentException("Unable to create remote interface.");

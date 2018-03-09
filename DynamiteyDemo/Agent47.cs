@@ -4,6 +4,8 @@ namespace DynamiteyDemo
 {
     class Agent47
     {
+        public event Func<int, float, string> OnContractSigned;
+
         public string Name { get; set; } = "Agent 47";
 
         public string Weapon { get; set; } = "Fiber Wire";

@@ -15,6 +15,7 @@
 
 
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using Dynamitey;
 using Dynamitey.DynamicObjects;
@@ -27,7 +28,6 @@ namespace Agency
     /// </summary>
     public class RemoteRecorder : BaseForwarder
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RemoteRecorder"/> class.
         /// </summary>
@@ -84,7 +84,7 @@ namespace Agency
         /// <returns>
         /// true if the operation is successful; otherwise, false. If this method returns false, the run-time binder of the language determines the behavior. (In most cases, a run-time exception is thrown.)
         /// </returns>
-        public override bool TryGetMember(System.Dynamic.GetMemberBinder binder, out object result)
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             if (base.TryGetMember(binder, out result))
             {
@@ -100,7 +100,7 @@ namespace Agency
         /// <param name="binder">The binder.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public override bool TrySetMember(System.Dynamic.SetMemberBinder binder, object value)
+        public override bool TrySetMember(SetMemberBinder binder, object value)
         {
             if (base.TrySetMember(binder, value))
             {
@@ -117,7 +117,7 @@ namespace Agency
         /// <param name="args">The args.</param>
         /// <param name="result">The result.</param>
         /// <returns></returns>
-        public override bool TryInvokeMember(System.Dynamic.InvokeMemberBinder binder, object[] args, out object result)
+        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
             if (base.TryInvokeMember(binder, args, out result))
             {
@@ -134,7 +134,7 @@ namespace Agency
         /// <param name="indexes">The indexes.</param>
         /// <param name="result">The result.</param>
         /// <returns></returns>
-        public override bool TryGetIndex(System.Dynamic.GetIndexBinder binder, object[] indexes, out object result)
+        public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
             if (base.TryGetIndex(binder, indexes, out result))
             {
@@ -151,7 +151,7 @@ namespace Agency
         /// <param name="indexes">The indexes.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public override bool TrySetIndex(System.Dynamic.SetIndexBinder binder, object[] indexes, object value)
+        public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
         {
             if (base.TrySetIndex(binder, indexes, value))
             {

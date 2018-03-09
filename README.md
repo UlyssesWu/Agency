@@ -1,8 +1,9 @@
 # Agency
 
-*Nobody outruns the Agency.*
+*Nobody outruns the Agency. - Benjamin Travis, Division chief of ICA*
 
-**Agency** is a .NET lib for Remote Dynamic. 
+**Agency** is a .NET lib for Remote Dynamic.
+
 It's achieved by Trinity Force: [Dynamitey](https://github.com/ekonbenefits/dynamitey) · [LinFu.Delegates](https://github.com/philiplaureano/LinFu.Delegates) · [Serialize.Linq](https://github.com/esskar/Serialize.Linq)
 
 ### Remote Dynamic? WTF?
@@ -66,7 +67,9 @@ static void Main(string[] args)
 
 ### Events
 [Example](https://github.com/UlyssesWu/Agency/blob/master/Agency.Test.Client/Program.cs)
+
 You can subscribe a server object's event using a client method. When event is triggered on server, the method executes on client. (The subscription can be slow!)
+
 Even more, you can also subscribe a server object's event using `Expression<T>` and it will be compiled and executed on server!
 
 ---

@@ -16,7 +16,6 @@
 
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 using Dynamitey;
 using Microsoft.CSharp.RuntimeBinder;
 
@@ -76,7 +75,7 @@ namespace Agency
         /// <returns></returns>
         public static RemoteInvocation Create(InvocationKind kind, String_OR_InvokeMemberName name, params object[] storedArgs)
         {
-            return new RemoteInvocation(kind,name.Name, storedArgs);
+            return new RemoteInvocation(kind, name.Name, storedArgs);
         }
 
         /// <summary>
@@ -115,8 +114,8 @@ namespace Agency
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != typeof (RemoteInvocation)) return false;
-            return Equals((RemoteInvocation) obj);
+            if (obj.GetType() != typeof(RemoteInvocation)) return false;
+            return Equals((RemoteInvocation)obj);
         }
 
         /// <summary>
@@ -130,8 +129,8 @@ namespace Agency
             unchecked
             {
                 int result = Kind.GetHashCode();
-                result = (result*397) ^ (Name != null ? Name.GetHashCode() : 0);
-                result = (result*397) ^ (Args != null ? Args.GetHashCode() : 0);
+                result = (result * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                result = (result * 397) ^ (Args != null ? Args.GetHashCode() : 0);
                 return result;
             }
         }

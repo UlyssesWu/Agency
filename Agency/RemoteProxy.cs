@@ -19,8 +19,8 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.Remoting;
 using System.Runtime.Serialization;
+using Agency.Contracts;
 using Dynamitey;
 using Dynamitey.DynamicObjects;
 using Dynamitey.Internal.Optimization;
@@ -180,7 +180,7 @@ namespace Agency
         /// <param name="args">The args.</param>
         /// <param name="result">The result.</param>
         /// <returns></returns>
-        public override bool TryInvokeMember(System.Dynamic.InvokeMemberBinder binder, object[] args, out object result)
+        public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
             if (base.TryInvokeMember(binder, args, out result))
             {
@@ -197,7 +197,7 @@ namespace Agency
         /// <param name="indexes">The indexes.</param>
         /// <param name="result">The result.</param>
         /// <returns></returns>
-        public override bool TryGetIndex(System.Dynamic.GetIndexBinder binder, object[] indexes, out object result)
+        public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
         {
             if (base.TryGetIndex(binder, indexes, out result))
             {
@@ -214,7 +214,7 @@ namespace Agency
         /// <param name="indexes">The indexes.</param>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        public override bool TrySetIndex(System.Dynamic.SetIndexBinder binder, object[] indexes, object value)
+        public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
         {
             if (base.TrySetIndex(binder, indexes, value))
             {

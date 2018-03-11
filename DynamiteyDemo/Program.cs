@@ -45,7 +45,9 @@ namespace DynamiteyDemo
                 agent.Chat(id, content);
             }
 
+            agent.OnChatServer -= Chat;
             Console.WriteLine("Disconnected.");
+            Console.ReadLine();
         }
 
         static void TestJson()

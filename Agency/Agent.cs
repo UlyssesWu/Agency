@@ -118,7 +118,15 @@ namespace Agency
             var argsArray = Expression.NewArrayInit(typeof(object), asObj);
 
             var callEx = Expression.Call(Expression.Constant(Dispatcher), typeof(ContractDispatcher).GetMethod("AssignContract") ?? throw new InvalidOperationException(), nameExp, argsArray);
-            var body = Expression.Convert(callEx, returnType);
+            Expression body;
+            if (returnType == null || returnType == typeof(void))
+            {
+                body = callEx;
+            }
+            else
+            {
+                body = Expression.Convert(callEx, returnType);
+            }
             var lambda = Expression.Lambda(body, paras);
             var s = lambda.ToString();
             var ret = lambda.Compile();

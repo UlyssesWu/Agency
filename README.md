@@ -4,7 +4,9 @@
 
 **Agency** is a .NET lib for Remote Dynamic.
 
-It's achieved by Trinity Force: [Dynamitey](https://github.com/ekonbenefits/dynamitey) · [LinFu.Delegates](https://github.com/philiplaureano/LinFu.Delegates) · [Serialize.Linq](https://github.com/esskar/Serialize.Linq)
+It's achieved by Trinity Force: [Dynamitey](https://github.com/ekonbenefits/dynamitey) · [Serialize.Linq](https://github.com/esskar/Serialize.Linq) · ExpressionTree
+
+Agency works on .NET and mono(Unity). .NET Core is not supported currently because it has neither .NET Remoting nor WCF Server support.
 
 ### Remote Dynamic? WTF?
 Remote Dynamic means to share objects between processes (usually using .NET Remoting) without the type to be known (using `dynamic` instead). It will be useful when the type is complex or changes frequently.
@@ -63,7 +65,9 @@ static void Main(string[] args)
 ```
 
 ### Handler
-`Handler` implements the communication way between processes. Currently Agency has implemented `IpcHandler` which uses .NET Remoting IPC. You can implement your handler as well.
+`Handler` implements the communication way between processes. 
+
+Currently Agency has implemented `IpcHandler`(faster but only for local CLR & Windows) and `TcpHandler` (slower but mono compatible) which uses .NET Remoting IPC. You can implement your handler as well.
 
 ### Events
 [Example](https://github.com/UlyssesWu/Agency/blob/master/Agency.Test.Client/Program.cs)

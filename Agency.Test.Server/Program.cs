@@ -8,7 +8,7 @@ namespace Agency.Test.Server
         static void Main(string[] args)
         {
             agent = new Agent47();
-            Agency.RegisterAgent("47", agent, new IpcHandler());
+            Agency.RegisterAgent("47", agent, new TcpHandler());
             Console.WriteLine("Agent 47 is on his way.");
             Console.ReadLine();
             Console.WriteLine($"Current Weapon: {agent.Weapon}");

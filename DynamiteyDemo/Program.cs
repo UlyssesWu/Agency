@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Agency;
-using Dynamitey;
-using Dynamitey.DynamicObjects;
 using Newtonsoft.Json;
 
 namespace DynamiteyDemo
@@ -13,7 +11,41 @@ namespace DynamiteyDemo
     {
         static void Main(string[] args)
         {
-            TestEvent();
+            TestUnity();
+        }
+
+        static void TestUnity()
+        {
+            Console.WriteLine("Input your ID:");
+            var id = Console.ReadLine();
+            id = id?.Replace('\r', ' ').Replace('\n', ' ').Trim() ?? "Anonymous Agent";
+
+            dynamic agent = Agency.Agency.SpawnAgent("ICA-Meeting", new TcpHandler());
+
+            Console.WriteLine("Connected to ICA Chatroom.");
+            agent.Join(id);
+            Action<string, string> Chat = (name, content) => Console.WriteLine($"{name}: {content}");
+
+            agent.OnChatServer += Chat;
+
+            while (true)
+            {
+                var content = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(content))
+                {
+                    continue;
+                }
+
+                if (content == "^C" || content == "\\quit" || content == "\\exit")
+                {
+                    agent.Leave(id);
+                    break;
+                }
+
+                agent.Chat(id, content);
+            }
+
+            Console.WriteLine("Disconnected.");
         }
 
         static void TestJson()

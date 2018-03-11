@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Reflection.Emit;
 
 namespace Agency.Test.Client
 {
@@ -15,7 +14,7 @@ namespace Agency.Test.Client
             dynamic agent;
             try
             {
-                agent = Agency.SpawnAgent("47", new IpcHandler());
+                agent = Agency.SpawnAgent("47", new TcpHandler());
             }
             catch (Exception e)
             {

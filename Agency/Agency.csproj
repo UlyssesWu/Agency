@@ -55,15 +55,10 @@
     <Compile Include="IpcHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteProxy.cs" />
+    <Compile Include="TcpHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LinFu.Delegates\LinFu.Delegates\LinFu.Delegates.csproj">
-      <Project>{723e33a7-903c-480c-8220-cf0980a0c36d}</Project>
-      <Name>LinFu.Delegates</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

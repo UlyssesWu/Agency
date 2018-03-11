@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agency.Test.Client", "Agenc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agency.DynamiteyDemo", "DynamiteyDemo\Agency.DynamiteyDemo.csproj", "{41423803-08EE-431D-BC7B-6C9793E50C5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinFu.Delegates", "LinFu.Delegates\LinFu.Delegates\LinFu.Delegates.csproj", "{723E33A7-903C-480C-8220-CF0980A0C36D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{41423803-08EE-431D-BC7B-6C9793E50C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41423803-08EE-431D-BC7B-6C9793E50C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41423803-08EE-431D-BC7B-6C9793E50C5B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{723E33A7-903C-480C-8220-CF0980A0C36D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{723E33A7-903C-480C-8220-CF0980A0C36D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{723E33A7-903C-480C-8220-CF0980A0C36D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{723E33A7-903C-480C-8220-CF0980A0C36D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

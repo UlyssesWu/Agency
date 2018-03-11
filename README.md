@@ -64,6 +64,10 @@ static void Main(string[] args)
 }
 ```
 
+Here is another [demo](https://github.com/UlyssesWu/Agency/blob/1ea16fc7e90a363590def3e9f03571b79830f565/DynamiteyDemo/Program.cs#L17) to show how you can share an object between an Unity(mono) program and a .NET(CLR) program, to implement a chat system with comfortable syntax.
+
+![UnityDemo](https://github.com/UlyssesWu/Agency/raw/master/Agency-Demo.png)
+
 ### Handler
 `Handler` implements the communication way between processes. 
 

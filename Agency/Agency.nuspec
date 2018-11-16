@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Agency</id>
+    <version>1.0.0</version>
+    <title>Agency</title>
+    <authors>UlyssesWu</authors>
+    <owners>UlyssesWu</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/UlyssesWu/Agency/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/UlyssesWu/Agency</projectUrl>
+    <description>Remote Dynamic.</description>
+    <copyright>Copyright © UlyssesWu 2018</copyright>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5">
+        <dependency id="Dynamitey" version="2.0.9.136" />
+        <dependency id="Serialize.Linq" version="1.7.3.1" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

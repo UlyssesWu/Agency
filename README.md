@@ -1,4 +1,5 @@
 # Agency
+[![MyGet](https://buildstats.info/myget/monarchsolutions/Agency)](https://www.myget.org/feed/monarchsolutions/package/nuget/Agency)
 [![monarchsolutions MyGet Build Status](https://www.myget.org/BuildSource/Badge/monarchsolutions?identifier=57da6500-9816-4593-ac01-801e911f7f19)](https://www.myget.org/)
 
 *Nobody outruns the Agency. - Benjamin Travis, Division chief of ICA*

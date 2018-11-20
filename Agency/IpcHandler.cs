@@ -91,6 +91,10 @@ namespace Agency
                 {
                     ChannelServices.UnregisterChannel(_serverChannel);
                 }
+                if (_clientChannel != null)
+                {
+                    ChannelServices.UnregisterChannel(_clientChannel);
+                }
             }
             catch (Exception e)
             {

@@ -11,13 +11,14 @@ namespace Agency
         private const string AgencyDomain = "ICA-IPC";
         private static Dictionary<string, IpcServerChannel> _serverChannels = new Dictionary<string, IpcServerChannel>();
         //private static List<IpcClientChannel> _clientChannels = new List<IpcClientChannel>();
+        private IpcServerChannel _serverChannel;
         private IpcServerChannel _clientChannel;
 
         public void Host(string address, object obj)
         {
             Agent agent = new Agent(address, obj);
-            var channel = IpcCreateServer(AgencyDomain, address, WellKnownObjectMode.Singleton, agent);
-            _serverChannels[address] = channel;
+            _serverChannel = IpcCreateServer(AgencyDomain, address, WellKnownObjectMode.Singleton, agent);
+            _serverChannels[address] = _serverChannel;
             return;
         }
 
@@ -80,6 +81,21 @@ namespace Agency
                 throw new ArgumentException("Unable to create remote interface.");
 
             return client;
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                if (_serverChannel != null)
+                {
+                    ChannelServices.UnregisterChannel(_serverChannel);
+                }
+            }
+            catch (Exception e)
+            {
+                //
+            }
         }
     }
 }

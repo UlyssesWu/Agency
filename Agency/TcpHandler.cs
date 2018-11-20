@@ -11,6 +11,7 @@ namespace Agency
         private uint _port;
         private string _ip;
         private TcpServerChannel _clientChannel;
+        private TcpServerChannel _serverChannel;
         private const string AgencyDomain = "ICA-TCP";
         private static Dictionary<string, TcpServerChannel> _serverChannels = new Dictionary<string, TcpServerChannel>();
         //private static List<IpcClientChannel> _clientChannels = new List<IpcClientChannel>();
@@ -23,8 +24,8 @@ namespace Agency
         public void Host(string address, object obj)
         {
             Agent agent = new Agent(address, obj);
-            var channel = TcpCreateServer(AgencyDomain, address, WellKnownObjectMode.Singleton, agent);
-            _serverChannels[address] = channel;
+            _serverChannel = TcpCreateServer(AgencyDomain, address, WellKnownObjectMode.Singleton, agent);
+            _serverChannels[address] = _serverChannel;
             return;
         }
 
@@ -86,6 +87,21 @@ namespace Agency
                 throw new ArgumentException("Unable to create remote interface.");
 
             return client;
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                if (_serverChannel != null)
+                {
+                    ChannelServices.UnregisterChannel(_serverChannel);
+                }
+            }
+            catch (Exception e)
+            {
+                //
+            }
         }
     }
 }

@@ -46,10 +46,10 @@
     <Compile Include="RemoteRecoder.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="IpcHandler.cs" />
+    <Compile Include="Handlers\IpcHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteProxy.cs" />
-    <Compile Include="TcpHandler.cs" />
+    <Compile Include="Handlers\TcpHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dynamitey">

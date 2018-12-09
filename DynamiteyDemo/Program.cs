@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Agency;
+using Agency.Handlers;
 using Newtonsoft.Json;
 
 namespace DynamiteyDemo

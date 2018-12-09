@@ -2,42 +2,41 @@
 using System.Collections.Generic;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Tcp;
+using System.Runtime.Remoting.Channels.Ipc;
 
-namespace Agency
+namespace Agency.Handlers
 {
-    public class TcpHandler : IHandler
+    public class IpcHandler : IHandler
     {
-        private uint _port;
-        private string _ip;
-        private TcpServerChannel _clientChannel;
-        private TcpServerChannel _serverChannel;
-        private const string AgencyDomain = "ICA-TCP";
-        private static Dictionary<string, TcpServerChannel> _serverChannels = new Dictionary<string, TcpServerChannel>();
+        private const string AgencyDomain = "ICA-IPC";
+        private static Dictionary<string, IpcServerChannel> _serverChannels = new Dictionary<string, IpcServerChannel>();
         //private static List<IpcClientChannel> _clientChannels = new List<IpcClientChannel>();
-        public TcpHandler(string ip = "localhost", uint port = 40147)
-        {
-            _ip = ip;
-            _port = port;
-        }
+        private IpcServerChannel _serverChannel;
+        private IpcServerChannel _clientChannel;
 
         public void Host(string address, object obj)
         {
             Agent agent = new Agent(address, obj);
-            _serverChannel = TcpCreateServer(AgencyDomain, address, WellKnownObjectMode.Singleton, agent);
+            _serverChannel = IpcCreateServer(AgencyDomain, address, WellKnownObjectMode.Singleton, agent);
             _serverChannels[address] = _serverChannel;
             return;
         }
 
-        private TcpServerChannel TcpCreateServer<T>(string name, string address, WellKnownObjectMode mode, T obj) where T : MarshalByRefObject
+        public Agent Connect(string address)
         {
-            TcpServerChannel channel = ChannelServices.GetChannel(name) as TcpServerChannel;
+            var agent = IpcConnectClient<Agent>(AgencyDomain, address);
+            return agent;
+        }
+
+        internal static IpcServerChannel IpcCreateServer<T>(string domain, string portName, WellKnownObjectMode mode, T obj) where T : MarshalByRefObject
+        {
+            IpcServerChannel channel = ChannelServices.GetChannel(domain) as IpcServerChannel;
             if (channel == null)
             {
                 BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
                 serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
                 //Instantiate our server channel.
-                channel = new TcpServerChannel(name, (int)_port, serverProvider);
+                channel = new IpcServerChannel(domain, domain, serverProvider);
                 //Register the server channel.
                 ChannelServices.RegisterChannel(channel, false);
             }
@@ -46,19 +45,13 @@ namespace Agency
             //Register this service type.
             if (obj == null)
             {
-                RemotingConfiguration.RegisterWellKnownServiceType(typeof(T), address, mode);
+                RemotingConfiguration.RegisterWellKnownServiceType(typeof(T), portName, mode);
             }
             else
             {
-                RemotingServices.Marshal(obj, address);
+                RemotingServices.Marshal(obj, portName);
             }
             return channel;
-        }
-
-        public Agent Connect(string address)
-        {
-            var agent = TcpConnectClient<Agent>(_ip, _port, address);
-            return agent;
         }
 
         /// <summary>
@@ -67,21 +60,22 @@ namespace Agency
         /// <param name="domain"></param>
         /// <param name="portName"></param>
         /// <returns></returns>
-        private T TcpConnectClient<T>(string ip, uint port, string name)
+        private T IpcConnectClient<T>(string domain, string portName)
         {
             if (_clientChannel == null)
             {
                 BinaryServerFormatterSinkProvider serverProvider = new BinaryServerFormatterSinkProvider();
                 serverProvider.TypeFilterLevel = System.Runtime.Serialization.Formatters.TypeFilterLevel.Full;
-                var channelName = $"{AgencyDomain}-C";
+                var channelName = $"{domain}C";
                 //Instantiate our server channel.
-                var channel = new TcpServerChannel(channelName, 0, serverProvider);
+                var channel = new IpcServerChannel(channelName, channelName, serverProvider);
                 //Register the server channel.
                 ChannelServices.RegisterChannel(channel, false);
                 _clientChannel = channel;
             }
+
             T client =
-                (T)Activator.GetObject(typeof(T), $"tcp://{ip}:{port}/{name}");
+                (T)Activator.GetObject(typeof(T), $"ipc://{domain}/{portName}");
 
             if (client == null)
                 throw new ArgumentException("Unable to create remote interface.");

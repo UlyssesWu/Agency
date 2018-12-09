@@ -1,4 +1,5 @@
 ﻿using System;
+using Agency.Handlers;
 
 namespace Agency.Test.Server
 {
@@ -8,8 +9,10 @@ namespace Agency.Test.Server
         static void Main(string[] args)
         {
             agent = new Agent47();
-            Agency.RegisterAgent("47", agent, new TcpHandler());
+            var handler = new TcpHandler(port: 0);
+            Agency.RegisterAgent("47", agent, handler);
             Console.WriteLine("Agent 47 is on his way.");
+            Console.WriteLine($"Access port: {handler.ServerPort}");
             Console.ReadLine();
             Console.WriteLine($"Current Weapon: {agent.Weapon}");
             Console.ReadLine();

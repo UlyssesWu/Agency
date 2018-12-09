@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Agency.Handlers;
 
 namespace Agency.Test.Client
 {
@@ -10,11 +11,14 @@ namespace Agency.Test.Client
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Input port:");
+            var p = Console.ReadLine();
+            IHandler handler = uint.TryParse(p, out uint port) ? new TcpHandler(port: port) : new TcpHandler();
             Console.WriteLine("This is the Handler, sending instructions to Agent.");
             dynamic agent;
             try
             {
-                agent = Agency.SpawnAgent("47", new TcpHandler());
+                agent = Agency.SpawnAgent("47", handler);
             }
             catch (Exception e)
             {
@@ -26,7 +30,7 @@ namespace Agency.Test.Client
             Console.WriteLine($"Agent, change your Weapon from {agent.Weapon} to {weapon}");
             //Set to server side
             agent.Weapon = weapon;
-            
+
             Func<int, float, string> func = (i, f) =>
             {
                 Console.WriteLine("Good job.");
@@ -38,7 +42,7 @@ namespace Agency.Test.Client
                 Console.WriteLine("Well done.");
                 return $"Money: ${i * f}";
             };
-            
+
             //This will pass the expression as a Func to be executed in server side event, but it's very limited.
             Expression<Action<int>> exp = i => Console.WriteLine($"Price: ${i} per target.");
             agent.OnContractSigned += exp;

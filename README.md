@@ -8,6 +8,8 @@
 
 It's achieved by Trinity Force: [Dynamitey](https://github.com/ekonbenefits/dynamitey) · [Serialize.Linq](https://github.com/esskar/Serialize.Linq) · ExpressionTree
 
+*Agent and Handler works in unity. - Diana Burnwood, ICA Handler*
+
 Agency works on .NET and mono(Unity). .NET Core is not supported currently because it has neither .NET Remoting nor WCF Server support.
 
 ### Remote Dynamic? WTF?

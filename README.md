@@ -18,7 +18,7 @@ Remote Dynamic means to share objects between processes (usually using .NET Remo
 ### Demo
 Server:
 
-```
+``` csharp
 class Agent47
 {
     public string Weapon { get; set; } = "Fiber Wire";
@@ -30,7 +30,7 @@ class Agent47
 }
 ```
 
-```
+``` csharp
 static void Main(string[] args)
 {
     var agent = new Agent47();
@@ -44,7 +44,7 @@ static void Main(string[] args)
 
 Client:
 
-```
+``` csharp
 static void Main(string[] args)
 {
     dynamic agent;
